@@ -1,4 +1,3 @@
-
 const express = require("express");
 const Vaga = require("../models/Vaga");
 
@@ -12,7 +11,7 @@ router.post("/", async (req, res) => {
     const novaVaga = await Vaga.create({
       cargo,
       empresa,
-      valor
+      valor,
     });
 
     res.status(201).json(novaVaga);
@@ -22,17 +21,17 @@ router.post("/", async (req, res) => {
     if (erro.name === "ValidationError") {
       return res.status(400).json({
         mensagem: "Dados inválidos para cadastrar a vaga.",
-        detalhe: erro.message
+        detalhe: erro.message,
       });
     }
 
     res.status(500).json({
-      mensagem: "Erro interno ao cadastrar a vaga."
+      mensagem: "Erro interno ao cadastrar a vaga.",
     });
   }
 });
 
-// READ - Listar todas as vagas cadastradas
+// READ - Listar todas as vagas
 router.get("/", async (req, res) => {
   try {
     const vagas = await Vaga.find();
@@ -42,7 +41,7 @@ router.get("/", async (req, res) => {
     console.error("Erro ao listar vagas:", erro.message);
 
     res.status(500).json({
-      mensagem: "Erro ao buscar vagas."
+      mensagem: "Erro ao buscar vagas.",
     });
   }
 });
@@ -57,68 +56,64 @@ router.put("/:id", async (req, res) => {
       { cargo, empresa, valor },
       {
         new: true,
-        runValidators: true
-      }
+        runValidators: true,
+      },
     );
 
     if (!vagaAtualizada) {
       return res.status(404).json({
-        mensagem: "Vaga não encontrada."
+        mensagem: "Vaga não encontrada.",
       });
     }
 
     res.status(200).json({
       mensagem: "Vaga atualizada com sucesso!",
-      vaga: vagaAtualizada
+      vaga: vagaAtualizada,
     });
-
   } catch (erro) {
     console.error("Erro ao atualizar vaga:", erro.message);
 
-    if (
-      erro.name === "ValidationError" ||
-      erro.name === "CastError"
-    ) {
+    if (erro.name === "ValidationError" || erro.name === "CastError") {
       return res.status(400).json({
         mensagem: "Dados ou ID inválidos.",
-        detalhe: erro.message
+        detalhe: erro.message,
       });
     }
 
     res.status(500).json({
-      mensagem: "Erro interno ao atualizar vaga."
+      mensagem: "Erro interno ao atualizar vaga.",
     });
   }
 });
+
 // DELETE - Excluir uma vaga pelo ID
 router.delete("/:id", async (req, res) => {
   try {
-    const vagaExcluida = await Vaga.findByIdAndDelete(
-      req.params.id
-    );
+    const vagaExcluida = await Vaga.findByIdAndDelete(req.params.id);
 
     if (!vagaExcluida) {
       return res.status(404).json({
-        mensagem: "Vaga não encontrada."
+        mensagem: "Vaga não encontrada.",
       });
     }
 
     res.status(200).json({
-      mensagem: "Vaga excluída com sucesso!"
+      mensagem: "Vaga excluída com sucesso!",
     });
-
   } catch (erro) {
     console.error("Erro ao excluir vaga:", erro.message);
 
     if (erro.name === "CastError") {
       return res.status(400).json({
-        mensagem: "ID da vaga inválido."
+        mensagem: "ID da vaga inválido.",
       });
     }
 
     res.status(500).json({
-      mensagem: "Erro interno ao excluir vaga."
+      mensagem: "Erro interno ao excluir vaga.",
     });
   }
 });
+
+// Exportar as rotas para o app.js
 module.exports = router;

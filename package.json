@@ -1,26 +1,41 @@
 {
-  "name": "trampo-certo-backend",
+  "name": "trampo-certo-backend-estudos",
   "version": "1.0.0",
-  "description": "API REST do projeto Trampo Certo — PMI III",
-  "main": "index.js",
+  "description": "API REST do Trampo Certo - projeto de estudos",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "test": "jest",
+    "test:coverage": "jest --coverage"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/j0rdanaaa/trampo-certo-backend.git"
+    "url": "git+https://github.com/j0rdanaaa/trampo-certo-backend-estudos.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/j0rdanaaa/trampo-certo-backend/issues"
-  },
-  "homepage": "https://github.com/j0rdanaaa/trampo-certo-backend#readme",
   "dependencies": {
     "cors": "^2.8.6",
     "dotenv": "^18.0.9",
     "express": "^5.3.0",
     "mongoose": "^9.11.4"
+  },
+  "devDependencies": {
+    "jest": "^30.5.2",
+    "supertest": "^7.3.1"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "collectCoverageFrom": [
+      "app.js",
+      "src/models/**/*.js",
+      "src/routes/**/*.js",
+      "src/config/**/*.js"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/src/tests/"
+    ]
   }
 }
