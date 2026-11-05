@@ -4,6 +4,43 @@ const Vaga = require("../models/Vaga");
 const router = express.Router();
 
 // CREATE - Cadastrar uma nova vaga
+/**
+ * @swagger
+ * /api/vagas:
+ *   post:
+ *     summary: Cadastra uma nova vaga
+ *     description: Cria uma vaga no sistema Trampo Certo.
+ *     tags:
+ *       - Vagas
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - cargo
+ *               - empresa
+ *               - valor
+ *             properties:
+ *               cargo:
+ *                 type: string
+ *                 example: Garçom
+ *               empresa:
+ *                 type: string
+ *                 example: Restaurante Floripa
+ *               valor:
+ *                 type: number
+ *                 minimum: 0
+ *                 example: 180
+ *     responses:
+ *       201:
+ *         description: Vaga cadastrada com sucesso.
+ *       400:
+ *         description: Dados inválidos.
+ *       500:
+ *         description: Erro interno do servidor.
+ */
 router.post("/", async (req, res) => {
   try {
     const { cargo, empresa, valor } = req.body;
@@ -32,6 +69,20 @@ router.post("/", async (req, res) => {
 });
 
 // READ - Listar todas as vagas
+/**
+ * @swagger
+ * /api/vagas:
+ *   get:
+ *     summary: Lista todas as vagas
+ *     description: Retorna as vagas cadastradas no sistema Trampo Certo.
+ *     tags:
+ *       - Vagas
+ *     responses:
+ *       200:
+ *         description: Lista de vagas retornada com sucesso.
+ *       500:
+ *         description: Erro interno do servidor.
+ */
 router.get("/", async (req, res) => {
   try {
     const vagas = await Vaga.find();
@@ -47,6 +98,48 @@ router.get("/", async (req, res) => {
 });
 
 // UPDATE - Atualizar uma vaga pelo ID
+/**
+ * @swagger
+ * /api/vagas/{id}:
+ *   put:
+ *     summary: Atualiza uma vaga existente
+ *     description: Atualiza os dados de uma vaga pelo ID.
+ *     tags:
+ *       - Vagas
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID da vaga no MongoDB.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               cargo:
+ *                 type: string
+ *                 example: Garçom
+ *               empresa:
+ *                 type: string
+ *                 example: Restaurante Floripa
+ *               valor:
+ *                 type: number
+ *                 minimum: 0
+ *                 example: 220
+ *     responses:
+ *       200:
+ *         description: Vaga atualizada com sucesso.
+ *       400:
+ *         description: Dados ou ID inválidos.
+ *       404:
+ *         description: Vaga não encontrada.
+ *       500:
+ *         description: Erro interno do servidor.
+ */
 router.put("/:id", async (req, res) => {
   try {
     const { cargo, empresa, valor } = req.body;
@@ -87,6 +180,31 @@ router.put("/:id", async (req, res) => {
 });
 
 // DELETE - Excluir uma vaga pelo ID
+/**
+ * @swagger
+ * /api/vagas/{id}:
+ *   delete:
+ *     summary: Exclui uma vaga
+ *     description: Remove uma vaga cadastrada pelo ID.
+ *     tags:
+ *       - Vagas
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID da vaga que será excluída.
+ *     responses:
+ *       200:
+ *         description: Vaga excluída com sucesso.
+ *       400:
+ *         description: ID inválido.
+ *       404:
+ *         description: Vaga não encontrada.
+ *       500:
+ *         description: Erro interno do servidor.
+ */
 router.delete("/:id", async (req, res) => {
   try {
     const vagaExcluida = await Vaga.findByIdAndDelete(req.params.id);

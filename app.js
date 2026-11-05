@@ -1,12 +1,14 @@
-
 const express = require("express");
 const cors = require("cors");
+const swaggerUi = require("swagger-ui-express");
+const swaggerSpec = require("./src/swagger");
 
 // Importar as rotas
 const vagaRoutes = require("./src/routes/vagaRoutes");
 const profissionalRoutes = require("./src/routes/profissionalRoutes");
 
 const app = express();
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Permitir requisições do Front-End React
 app.use(cors({
